@@ -15,6 +15,10 @@ import gamestates.Playing;
 import main.Game;
 import utilz.LoadSave;
 
+import java.awt.Graphics2D;
+import java.awt.geom.RoundRectangle2D;
+
+
 public class Player extends Entity {
 
 	private BufferedImage[][] animations;
@@ -37,18 +41,12 @@ public class Player extends Entity {
 	private int statusBarY = (int) (10 * Game.SCALE);
 
 	private int healthBarWidth = (int) (150 * Game.SCALE);
-	private int healthBarHeight = (int) (4 * Game.SCALE);
-	private int healthBarXStart = (int) (34 * Game.SCALE);
-	private int healthBarYStart = (int) (14 * Game.SCALE);
+	private int healthBarHeight = (int) (11 * Game.SCALE);
+	private int healthBarXStart = (int) (40 * Game.SCALE);
+	private int healthBarYStart = (int) (21 * Game.SCALE);
 	private int healthWidth = healthBarWidth;
 
-	private int powerBarWidth = (int) (104 * Game.SCALE);
-	private int powerBarHeight = (int) (2 * Game.SCALE);
-	private int powerBarXStart = (int) (44 * Game.SCALE);
-	private int powerBarYStart = (int) (34 * Game.SCALE);
-	private int powerWidth = powerBarWidth;
-	private int powerMaxValue = 200;
-	private int powerValue = powerMaxValue;
+
 
 	private int flipX = 0;
 	private int flipW = 1;
@@ -58,10 +56,6 @@ public class Player extends Entity {
 
 	private int tileY = 0;
 
-	private boolean powerAttackActive;
-	private int powerAttackTick;
-	private int powerGrowSpeed = 15;
-	private int powerGrowTick;
 
 	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
@@ -89,7 +83,6 @@ public class Player extends Entity {
 
 	public void update() {
 		updateHealthBar();
-		updatePowerBar();
 
 		if (currentHealth <= 0) {
 			if (state != DEAD) {
@@ -138,16 +131,10 @@ public class Player extends Entity {
 			checkSpikesTouched();
 			checkInsideWater();
 			tileY = (int) (hitbox.y / Game.TILES_SIZE);
-			if (powerAttackActive) {
-				powerAttackTick++;
-				if (powerAttackTick >= 35) {
-					powerAttackTick = 0;
-					powerAttackActive = false;
-				}
-			}
+			
 		}
 
-		if (attacking || powerAttackActive)
+		if (attacking )
 			checkAttack();
 
 		updateAnimationTick();
@@ -172,8 +159,7 @@ public class Player extends Entity {
 			return;
 		attackChecked = true;
 
-		if (powerAttackActive)
-			attackChecked = false;
+		
 
 		playing.checkEnemyHit(attackBox);
 		playing.checkObjectHit(attackBox);
@@ -196,9 +182,9 @@ public class Player extends Entity {
 				setAttackBoxOnLeftSide();
 			}
 
-		} else if (right || (powerAttackActive && flipW == 1))
+		} else if (right)
 			setAttackBoxOnRightSide();
-		else if (left || (powerAttackActive && flipW == -1))
+		else if (left)
 			setAttackBoxOnLeftSide();
 
 		attackBox.y = hitbox.y + (Game.SCALE * 10);
@@ -208,15 +194,7 @@ public class Player extends Entity {
 		healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
 	}
 
-	private void updatePowerBar() {
-		powerWidth = (int) ((powerValue / (float) powerMaxValue) * powerBarWidth);
-
-		powerGrowTick++;
-		if (powerGrowTick >= powerGrowSpeed) {
-			powerGrowTick = 0;
-			changePower(1);
-		}
-	}
+	
 
 	public void render(Graphics g, int lvlOffset) {
 		g.drawImage(animations[state][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset + (int) (pushDrawOffset)), width * flipW, height, null);
@@ -229,13 +207,24 @@ public class Player extends Entity {
 		// Background ui
 		g.drawImage(statusBarImg, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
 
-		// Health bar
-		g.setColor(Color.red);
-		g.fillRect(healthBarXStart + statusBarX, healthBarYStart + statusBarY, healthWidth, healthBarHeight);
+		Graphics2D g2d = (Graphics2D) g;
+    g2d.setColor(Color.red);
 
-		// Power Bar
-		g.setColor(Color.yellow);
-		g.fillRect(powerBarXStart + statusBarX, powerBarYStart + statusBarY, powerWidth, powerBarHeight);
+    // Set the arc width and height to create the rounded effect. The larger the value, the more pronounced the curve.
+    float arcWidth = 10.0f * Game.SCALE;
+    float arcHeight = 10.0f * Game.SCALE;
+
+    RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(
+        healthBarXStart + statusBarX, 
+        healthBarYStart + statusBarY, 
+        healthWidth, 
+        healthBarHeight, 
+        arcWidth, 
+        arcHeight
+    );
+
+    g2d.fill(roundedRectangle);
+
 	}
 
 	private void updateAnimationTick() {
@@ -275,12 +264,7 @@ public class Player extends Entity {
 				state = FALLING;
 		}
 
-		if (powerAttackActive) {
-			state = ATTACK;
-			aniIndex = 1;
-			aniTick = 0;
-			return;
-		}
+		
 
 		if (attacking) {
 			state = ATTACK;
@@ -306,8 +290,7 @@ public class Player extends Entity {
 			jump();
 
 		if (!inAir)
-			if (!powerAttackActive)
-				if ((!left && !right) || (right && left))
+			if ((!left && !right) || (right && left))
 					return;
 
 		float xSpeed = 0;
@@ -323,22 +306,13 @@ public class Player extends Entity {
 			flipW = 1;
 		}
 
-		if (powerAttackActive) {
-			if ((!left && !right) || (left && right)) {
-				if (flipW == -1)
-					xSpeed = -walkSpeed;
-				else
-					xSpeed = walkSpeed;
-			}
-
-			xSpeed *= 3;
-		}
+		
 
 		if (!inAir)
 			if (!IsEntityOnFloor(hitbox, lvlData))
 				inAir = true;
 
-		if (inAir && !powerAttackActive) {
+		if (inAir) {
 			if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
 				hitbox.y += airSpeed;
 				airSpeed += GRAVITY;
@@ -375,10 +349,7 @@ public class Player extends Entity {
 			hitbox.x += xSpeed;
 		else {
 			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
-			if (powerAttackActive) {
-				powerAttackActive = false;
-				powerAttackTick = 0;
-			}
+			
 		}
 	}
 
@@ -411,10 +382,7 @@ public class Player extends Entity {
 		currentHealth = 0;
 	}
 
-	public void changePower(int value) {
-		powerValue += value;
-		powerValue = Math.max(Math.min(powerValue, powerMaxValue), 0);
-	}
+	
 
 	private void loadAnimations() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
@@ -469,9 +437,7 @@ public class Player extends Entity {
 		airSpeed = 0f;
 		state = IDLE;
 		currentHealth = maxHealth;
-		powerAttackActive = false;
-		powerAttackTick = 0;
-		powerValue = powerMaxValue;
+	
 
 		hitbox.x = x;
 		hitbox.y = y;
@@ -492,14 +458,6 @@ public class Player extends Entity {
 		return tileY;
 	}
 
-	public void powerAttack() {
-		if (powerAttackActive)
-			return;
-		if (powerValue >= 60) {
-			powerAttackActive = true;
-			changePower(-60);
-		}
 
-	}
 
 }

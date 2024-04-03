@@ -20,7 +20,7 @@ import ui.LevelCompletedOverlay;
 import ui.PauseOverlay;
 import utilz.LoadSave;
 import effects.DialogueEffect;
-import effects.Rain;
+// import effects.Rain;
 
 import static utilz.Constants.Environment.*;
 import static utilz.Constants.Dialogue.*;
@@ -35,7 +35,7 @@ public class Playing extends State implements Statemethods {
 	private GameOverOverlay gameOverOverlay;
 	private GameCompletedOverlay gameCompletedOverlay;
 	private LevelCompletedOverlay levelCompletedOverlay;
-	private Rain rain;
+	// private Rain rain;
 
 	private boolean paused = false;
 
@@ -153,7 +153,7 @@ public class Playing extends State implements Statemethods {
 		levelCompletedOverlay = new LevelCompletedOverlay(this);
 		gameCompletedOverlay = new GameCompletedOverlay(this);
 
-		rain = new Rain();
+		// rain = new Rain();
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class Playing extends State implements Statemethods {
 		else {
 			updateDialogue();
 			if (drawRain)
-				rain.update(xLvlOffset);
+				// rain.update(xLvlOffset);
 			levelManager.update();
 			objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			player.update();
@@ -246,7 +246,7 @@ public class Playing extends State implements Statemethods {
 
 		drawClouds(g);
 		if (drawRain)
-			rain.draw(g, xLvlOffset);
+			// rain.draw(g, xLvlOffset);
 
 		if (drawShip)
 			g.drawImage(shipImgs[shipAni], (int) (100 * Game.SCALE) - xLvlOffset, (int) ((288 * Game.SCALE) + shipHeightDelta), (int) (78 * Game.SCALE), (int) (72 * Game.SCALE), null);
@@ -255,7 +255,7 @@ public class Playing extends State implements Statemethods {
 		objectManager.draw(g, xLvlOffset);
 		enemyManager.draw(g, xLvlOffset);
 		player.render(g, xLvlOffset);
-		objectManager.drawBackgroundTrees(g, xLvlOffset);
+		// objectManager.drawBackgroundTrees(g, xLvlOffset);
 		drawDialogue(g, xLvlOffset);
 
 		if (paused) {
@@ -333,8 +333,7 @@ public class Playing extends State implements Statemethods {
 		if (!gameOver) {
 			if (e.getButton() == MouseEvent.BUTTON1)
 				player.setAttacking(true);
-			else if (e.getButton() == MouseEvent.BUTTON3)
-				player.powerAttack();
+			
 		}
 	}
 

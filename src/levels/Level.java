@@ -9,8 +9,7 @@ import entities.Crabby;
 import entities.Pinkstar;
 import entities.Shark;
 import main.Game;
-import objects.BackgroundTree;
-import objects.Cannon;
+// import objects.BackgroundTree;
 import objects.GameContainer;
 import objects.Grass;
 import objects.Potion;
@@ -30,8 +29,7 @@ public class Level {
 	private ArrayList<Potion> potions = new ArrayList<>();
 	private ArrayList<Spike> spikes = new ArrayList<>();
 	private ArrayList<GameContainer> containers = new ArrayList<>();
-	private ArrayList<Cannon> cannons = new ArrayList<>();
-	private ArrayList<BackgroundTree> trees = new ArrayList<>();
+	// private ArrayList<BackgroundTree> trees = new ArrayList<>();
 	private ArrayList<Grass> grass = new ArrayList<>();
 
 	private int lvlTilesWide;
@@ -94,8 +92,7 @@ public class Level {
 		case RED_POTION, BLUE_POTION -> potions.add(new Potion(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
 		case BOX, BARREL -> containers.add(new GameContainer(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
 		case SPIKE -> spikes.add(new Spike(x * Game.TILES_SIZE, y * Game.TILES_SIZE, SPIKE));
-		case CANNON_LEFT, CANNON_RIGHT -> cannons.add(new Cannon(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
-		case TREE_ONE, TREE_TWO, TREE_THREE -> trees.add(new BackgroundTree(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
+		// case TREE_ONE, TREE_TWO, TREE_THREE -> trees.add(new BackgroundTree(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
 		}
 	}
 
@@ -141,17 +138,15 @@ public class Level {
 		return spikes;
 	}
 
-	public ArrayList<Cannon> getCannons() {
-		return cannons;
-	}
+	
 
 	public ArrayList<Pinkstar> getPinkstars() {
 		return pinkstars;
 	}
 
-	public ArrayList<BackgroundTree> getTrees() {
-		return trees;
-	}
+	// public ArrayList<BackgroundTree> getTrees() {
+	// 	return trees;
+	// }
 
 	public ArrayList<Grass> getGrass() {
 		return grass;

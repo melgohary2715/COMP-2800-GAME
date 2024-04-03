@@ -3,7 +3,6 @@ package utilz;
 import java.awt.geom.Rectangle2D;
 
 import main.Game;
-import objects.Projectile;
 
 public class HelpMethods {
 
@@ -28,9 +27,7 @@ public class HelpMethods {
 		return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
 	}
 
-	public static boolean IsProjectileHittingLevel(Projectile p, int[][] lvlData) {
-		return IsSolid(p.getHitbox().x + p.getHitbox().width / 2, p.getHitbox().y + p.getHitbox().height / 2, lvlData);
-	}
+	
 
 	public static boolean IsEntityInWater(Rectangle2D.Float hitbox, int[][] lvlData) {
 		// Will only check if entity touch top water. Can't reach bottom water if not

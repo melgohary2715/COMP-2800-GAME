@@ -12,9 +12,7 @@ import levels.Level;
 import main.Game;
 import utilz.LoadSave;
 import static utilz.Constants.ObjectConstants.*;
-import static utilz.HelpMethods.CanCannonSeePlayer;
-import static utilz.HelpMethods.IsProjectileHittingLevel;
-import static utilz.Constants.Projectiles.*;
+
 
 public class ObjectManager {
 
@@ -22,10 +20,9 @@ public class ObjectManager {
 	private BufferedImage[][] potionImgs, containerImgs;
 	private BufferedImage[] cannonImgs, grassImgs;
 	private BufferedImage[][] treeImgs;
-	private BufferedImage spikeImg, cannonBallImg;
+	private BufferedImage spikeImg, cannonBalxlImg;
 	private ArrayList<Potion> potions;
 	private ArrayList<GameContainer> containers;
-	private ArrayList<Projectile> projectiles = new ArrayList<>();
 
 	private Level currentLevel;
 
@@ -60,8 +57,6 @@ public class ObjectManager {
 	public void applyEffectToPlayer(Potion p) {
 		if (p.getObjType() == RED_POTION)
 			playing.getPlayer().changeHealth(RED_POTION_VALUE);
-		else
-			playing.getPlayer().changePower(BLUE_POTION_VALUE);
 	}
 
 	public void checkObjectHit(Rectangle2D.Float attackbox) {
@@ -82,7 +77,6 @@ public class ObjectManager {
 		currentLevel = newLevel;
 		potions = new ArrayList<>(newLevel.getPotions());
 		containers = new ArrayList<>(newLevel.getContainers());
-		projectiles.clear();
 	}
 
 	private void loadImgs() {
@@ -108,7 +102,6 @@ public class ObjectManager {
 		for (int i = 0; i < cannonImgs.length; i++)
 			cannonImgs[i] = temp.getSubimage(i * 40, 0, 40, 26);
 
-		cannonBallImg = LoadSave.GetSpriteAtlas(LoadSave.CANNON_BALL);
 		treeImgs = new BufferedImage[2][4];
 		BufferedImage treeOneImg = LoadSave.GetSpriteAtlas(LoadSave.TREE_ONE_ATLAS);
 		for (int i = 0; i < 4; i++)
@@ -125,7 +118,7 @@ public class ObjectManager {
 	}
 
 	public void update(int[][] lvlData, Player player) {
-		updateBackgroundTrees();
+		// updateBackgroundTrees();
 		for (Potion p : potions)
 			if (p.isActive())
 				p.update();
@@ -134,109 +127,34 @@ public class ObjectManager {
 			if (gc.isActive())
 				gc.update();
 
-		updateCannons(lvlData, player);
-		updateProjectiles(lvlData, player);
 
 	}
 
-	private void updateBackgroundTrees() {
-		for (BackgroundTree bt : currentLevel.getTrees())
-			bt.update();
-	}
+	// private void updateBackgroundTrees() {
+	// 	for (BackgroundTree bt : currentLevel.getTrees())
+	// 		bt.update();
+	// }
 
-	private void updateProjectiles(int[][] lvlData, Player player) {
-		for (Projectile p : projectiles)
-			if (p.isActive()) {
-				p.updatePos();
-				if (p.getHitbox().intersects(player.getHitbox())) {
-					player.changeHealth(-25);
-					p.setActive(false);
-				} else if (IsProjectileHittingLevel(p, lvlData))
-					p.setActive(false);
-			}
-	}
+	
 
-	private boolean isPlayerInRange(Cannon c, Player player) {
-		int absValue = (int) Math.abs(player.getHitbox().x - c.getHitbox().x);
-		return absValue <= Game.TILES_SIZE * 5;
-	}
 
-	private boolean isPlayerInfrontOfCannon(Cannon c, Player player) {
-		if (c.getObjType() == CANNON_LEFT) {
-			if (c.getHitbox().x > player.getHitbox().x)
-				return true;
+	
 
-		} else if (c.getHitbox().x < player.getHitbox().x)
-			return true;
-		return false;
-	}
 
-	private void updateCannons(int[][] lvlData, Player player) {
-		for (Cannon c : currentLevel.getCannons()) {
-			if (!c.doAnimation)
-				if (c.getTileY() == player.getTileY())
-					if (isPlayerInRange(c, player))
-						if (isPlayerInfrontOfCannon(c, player))
-							if (CanCannonSeePlayer(lvlData, player.getHitbox(), c.getHitbox(), c.getTileY()))
-								c.setAnimation(true);
 
-			c.update();
-			if (c.getAniIndex() == 4 && c.getAniTick() == 0)
-				shootCannon(c);
-		}
-	}
 
-	private void shootCannon(Cannon c) {
-		int dir = 1;
-		if (c.getObjType() == CANNON_LEFT)
-			dir = -1;
-
-		projectiles.add(new Projectile((int) c.getHitbox().x, (int) c.getHitbox().y, dir));
-	}
 
 	public void draw(Graphics g, int xLvlOffset) {
 		drawPotions(g, xLvlOffset);
 		drawContainers(g, xLvlOffset);
 		drawTraps(g, xLvlOffset);
-		drawCannons(g, xLvlOffset);
-		drawProjectiles(g, xLvlOffset);
-		drawGrass(g, xLvlOffset);
 	}
 
-	private void drawGrass(Graphics g, int xLvlOffset) {
-		for (Grass grass : currentLevel.getGrass())
-			g.drawImage(grassImgs[grass.getType()], grass.getX() - xLvlOffset, grass.getY(), (int) (32 * Game.SCALE), (int) (32 * Game.SCALE), null);
-	}
 
-	public void drawBackgroundTrees(Graphics g, int xLvlOffset) {
-		for (BackgroundTree bt : currentLevel.getTrees()) {
 
-			int type = bt.getType();
-			if (type == 9)
-				type = 8;
-			g.drawImage(treeImgs[type - 7][bt.getAniIndex()], bt.getX() - xLvlOffset + GetTreeOffsetX(bt.getType()), (int) (bt.getY() + GetTreeOffsetY(bt.getType())), GetTreeWidth(bt.getType()),
-					GetTreeHeight(bt.getType()), null);
-		}
-	}
+	
 
-	private void drawProjectiles(Graphics g, int xLvlOffset) {
-		for (Projectile p : projectiles)
-			if (p.isActive())
-				g.drawImage(cannonBallImg, (int) (p.getHitbox().x - xLvlOffset), (int) (p.getHitbox().y), CANNON_BALL_WIDTH, CANNON_BALL_HEIGHT, null);
-	}
-
-	private void drawCannons(Graphics g, int xLvlOffset) {
-		for (Cannon c : currentLevel.getCannons()) {
-			int x = (int) (c.getHitbox().x - xLvlOffset);
-			int width = CANNON_WIDTH;
-
-			if (c.getObjType() == CANNON_RIGHT) {
-				x += width;
-				width *= -1;
-			}
-			g.drawImage(cannonImgs[c.getAniIndex()], x, (int) (c.getHitbox().y), width, CANNON_HEIGHT, null);
-		}
-	}
+	
 
 	private void drawTraps(Graphics g, int xLvlOffset) {
 		for (Spike s : currentLevel.getSpikes())
@@ -272,7 +190,6 @@ public class ObjectManager {
 			p.reset();
 		for (GameContainer gc : containers)
 			gc.reset();
-		for (Cannon c : currentLevel.getCannons())
-			c.reset();
+		
 	}
 }
