@@ -96,29 +96,9 @@ public class ObjectManager {
 
 		spikeImg = LoadSave.GetSpriteAtlas(LoadSave.TRAP_ATLAS);
 
-		cannonImgs = new BufferedImage[7];
-		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.CANNON_ATLAS);
-
-		for (int i = 0; i < cannonImgs.length; i++)
-			cannonImgs[i] = temp.getSubimage(i * 40, 0, 40, 26);
-
-		treeImgs = new BufferedImage[2][4];
-		BufferedImage treeOneImg = LoadSave.GetSpriteAtlas(LoadSave.TREE_ONE_ATLAS);
-		for (int i = 0; i < 4; i++)
-			treeImgs[0][i] = treeOneImg.getSubimage(i * 39, 0, 39, 92);
-
-		BufferedImage treeTwoImg = LoadSave.GetSpriteAtlas(LoadSave.TREE_TWO_ATLAS);
-		for (int i = 0; i < 4; i++)
-			treeImgs[1][i] = treeTwoImg.getSubimage(i * 62, 0, 62, 54);
-
-		BufferedImage grassTemp = LoadSave.GetSpriteAtlas(LoadSave.GRASS_ATLAS);
-		grassImgs = new BufferedImage[2];
-		for (int i = 0; i < grassImgs.length; i++)
-			grassImgs[i] = grassTemp.getSubimage(32 * i, 0, 32, 32);
 	}
 
 	public void update(int[][] lvlData, Player player) {
-		// updateBackgroundTrees();
 		for (Potion p : potions)
 			if (p.isActive())
 				p.update();
@@ -130,20 +110,6 @@ public class ObjectManager {
 
 	}
 
-	// private void updateBackgroundTrees() {
-	// 	for (BackgroundTree bt : currentLevel.getTrees())
-	// 		bt.update();
-	// }
-
-	
-
-
-	
-
-
-
-
-
 	public void draw(Graphics g, int xLvlOffset) {
 		drawPotions(g, xLvlOffset);
 		drawContainers(g, xLvlOffset);
@@ -151,10 +117,6 @@ public class ObjectManager {
 	}
 
 
-
-	
-
-	
 
 	private void drawTraps(Graphics g, int xLvlOffset) {
 		for (Spike s : currentLevel.getSpikes())
