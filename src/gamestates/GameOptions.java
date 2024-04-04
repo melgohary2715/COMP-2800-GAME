@@ -35,12 +35,12 @@ public class GameOptions extends State implements Statemethods {
 
 	private void loadImgs() {
 		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.MENU_BACKGROUND_IMG);
-		optionsBackgroundImg = LoadSave.GetSpriteAtlas(LoadSave.OPTIONS_MENU);
+		// optionsBackgroundImg = LoadSave.GetSpriteAtlas(LoadSave.OPTIONS_MENU);
 
-		bgW = (int) (optionsBackgroundImg.getWidth() * Game.SCALE);
-		bgH = (int) (optionsBackgroundImg.getHeight() * Game.SCALE);
-		bgX = Game.GAME_WIDTH / 2 - bgW / 2;
-		bgY = (int) (33 * Game.SCALE);
+		// bgW = (int) (optionsBackgroundImg.getWidth() * Game.SCALE);
+		// bgH = (int) (optionsBackgroundImg.getHeight() * Game.SCALE);
+		// bgX = Game.GAME_WIDTH / 2 - bgW / 2;
+		// bgY = (int) (33 * Game.SCALE);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class GameOptions extends State implements Statemethods {
 	@Override
 	public void draw(Graphics g) {
 		g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-		g.drawImage(optionsBackgroundImg, bgX, bgY, bgW, bgH, null);
+		// g.drawImage(optionsBackgroundImg, bgX, bgY, bgW, bgH, null);
 
 		menuB.draw(g);
 		// audioOptions.draw(g);
