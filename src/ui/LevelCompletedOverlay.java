@@ -27,17 +27,17 @@ public class LevelCompletedOverlay {
 	private void initButtons() {
 		int menuX = (int) (330 * Game.SCALE);
 		int nextX = (int) (445 * Game.SCALE);
-		int y = (int) (195 * Game.SCALE);
+		int y = (int) (265 * Game.SCALE);
 		next = new UrmButton(nextX, y, URM_SIZE, URM_SIZE, 0);
 		menu = new UrmButton(menuX, y, URM_SIZE, URM_SIZE, 2);
 	}
 
 	private void initImg() {
 		img = LoadSave.GetSpriteAtlas(LoadSave.COMPLETED_IMG);
-		bgW = (int) (img.getWidth() * Game.SCALE);
-		bgH = (int) (img.getHeight() * Game.SCALE);
+		bgW = (int) (img.getWidth() * 7.0);
+		bgH = (int) (img.getHeight() * 5.0);
 		bgX = Game.GAME_WIDTH / 2 - bgW / 2;
-		bgY = (int) (75 * Game.SCALE);
+		bgY = (int) (-75 * Game.SCALE);
 	}
 
 	public void draw(Graphics g) {

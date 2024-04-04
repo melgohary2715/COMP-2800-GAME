@@ -65,8 +65,8 @@ public class ObjectManager {
 				if (gc.getHitbox().intersects(attackbox)) {
 					gc.setAnimation(true);
 					int type = 0;
-					if (gc.getObjType() == BARREL)
-						type = 1;
+					// if (gc.getObjType() == BARREL)
+					// 	type = 1;
 					potions.add(new Potion((int) (gc.getHitbox().x + gc.getHitbox().width / 2), (int) (gc.getHitbox().y - gc.getHitbox().height / 2), type));
 					return;
 				}
@@ -128,8 +128,8 @@ public class ObjectManager {
 		for (GameContainer gc : containers)
 			if (gc.isActive()) {
 				int type = 0;
-				if (gc.getObjType() == BARREL)
-					type = 1;
+				// if (gc.getObjType() == BARREL)
+				// 	type = 1;
 				g.drawImage(containerImgs[type][gc.getAniIndex()], (int) (gc.getHitbox().x - gc.getxDrawOffset() - xLvlOffset), (int) (gc.getHitbox().y - gc.getyDrawOffset()), CONTAINER_WIDTH,
 						CONTAINER_HEIGHT, null);
 			}
