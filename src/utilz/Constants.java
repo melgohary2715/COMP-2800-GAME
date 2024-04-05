@@ -40,11 +40,11 @@ public class Constants {
 		// public static final int BARREL = 2;
 		public static final int BOX = 3;
 		public static final int SPIKE = 4;
-		public static final int CANNON_LEFT = 5;
-		public static final int CANNON_RIGHT = 6;
-		public static final int TREE_ONE = 7;
-		public static final int TREE_TWO = 8;
-		public static final int TREE_THREE = 9;
+		// public static final int CANNON_LEFT = 5;
+		// public static final int CANNON_RIGHT = 6;
+		// public static final int TREE_ONE = 7;
+		// public static final int TREE_TWO = 8;
+		// public static final int TREE_THREE = 9;
 
 		public static final int RED_POTION_VALUE = 15;
 		public static final int BLUE_POTION_VALUE = 10;
@@ -75,8 +75,8 @@ public class Constants {
 				return 7;
 			case BOX:
 				return 8;
-			case CANNON_LEFT, CANNON_RIGHT:
-				return 7;
+			// case CANNON_LEFT, CANNON_RIGHT:
+			// 	return 7;
 			}
 			return 1;
 		}
@@ -238,15 +238,15 @@ public class Constants {
 
 		}
 
-		public static class VolumeButtons {
-			public static final int VOLUME_DEFAULT_WIDTH = 28;
-			public static final int VOLUME_DEFAULT_HEIGHT = 44;
-			public static final int SLIDER_DEFAULT_WIDTH = 215;
+		// public static class VolumeButtons {
+		// 	public static final int VOLUME_DEFAULT_WIDTH = 28;
+		// 	public static final int VOLUME_DEFAULT_HEIGHT = 44;
+		// 	public static final int SLIDER_DEFAULT_WIDTH = 215;
 
-			public static final int VOLUME_WIDTH = (int) (VOLUME_DEFAULT_WIDTH * Game.SCALE);
-			public static final int VOLUME_HEIGHT = (int) (VOLUME_DEFAULT_HEIGHT * Game.SCALE);
-			public static final int SLIDER_WIDTH = (int) (SLIDER_DEFAULT_WIDTH * Game.SCALE);
-		}
+		// 	public static final int VOLUME_WIDTH = (int) (VOLUME_DEFAULT_WIDTH * Game.SCALE);
+		// 	public static final int VOLUME_HEIGHT = (int) (VOLUME_DEFAULT_HEIGHT * Game.SCALE);
+		// 	public static final int SLIDER_WIDTH = (int) (SLIDER_DEFAULT_WIDTH * Game.SCALE);
+		// }
 	}
 
 	public static class Directions {

@@ -20,7 +20,7 @@ public class Game implements Runnable {
 	private Playing playing;
 	private Menu menu;
 	// private Credits credits;
-	private GameOptions gameOptions;
+	// private GameOptions gameOptions;
 	// private AudioOptions audioOptions;
 	private AudioPlayer audioPlayer;
 
@@ -49,7 +49,7 @@ public class Game implements Runnable {
 		audioPlayer = new AudioPlayer();
 		menu = new Menu(this);
 		playing = new Playing(this);
-		gameOptions = new GameOptions(this);
+		// gameOptions = new GameOptions(this);
 	}
 
 	private void startGameLoop() {
@@ -143,9 +143,9 @@ public class Game implements Runnable {
 	// 	return credits;
 	// }
 
-	public GameOptions getGameOptions() {
-		return gameOptions;
-	}
+	// public GameOptions getGameOptions() {
+	// 	return gameOptions;
+	// }
 
 	// public AudioOptions getAudioOptions() {
 	// 	return audioOptions;
