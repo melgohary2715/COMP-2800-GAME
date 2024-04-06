@@ -10,34 +10,38 @@ import static main.Game.GAME_WIDTH;
 
 public class GamePanel extends JPanel {
 
-	private MouseInputs mouseInputs;
-	private Game game;
+    private MouseInputs mouseInputs;
+    private Game game;
 
-	public GamePanel(Game game) {
-		mouseInputs = new MouseInputs(this);
-		this.game = game;
-		setPanelSize();
-		addKeyListener(new KeyboardInputs(this));
-		addMouseListener(mouseInputs);
-		addMouseMotionListener(mouseInputs);
-	}
+    // Constructor for GamePanel
+    public GamePanel(Game game) {
+        mouseInputs = new MouseInputs(this);
+        this.game = game;
+        setPanelSize(); // Set the size of the game panel
+        addKeyListener(new KeyboardInputs(this)); // Add keyboard input listener
+        addMouseListener(mouseInputs); // Add mouse input listener
+        addMouseMotionListener(mouseInputs); // Add mouse motion listener
+    }
 
-	private void setPanelSize() {
-		Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
-		setPreferredSize(size);
-	}
+    // Sets the size of the game panel
+    private void setPanelSize() {
+        Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
+        setPreferredSize(size);
+    }
 
-	public void updateGame() {
+    // Updates the game (currently empty)
+    public void updateGame() {
+        // Game update logic
+    }
 
-	}
+    // Paints the game components
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        game.render(g); // Render the game
+    }
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		game.render(g);
-	}
-
-	public Game getGame() {
-		return game;
-	}
-
+    // Getter for the game instance
+    public Game getGame() {
+        return game;
+    }
 }
