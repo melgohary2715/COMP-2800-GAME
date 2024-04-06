@@ -4,34 +4,43 @@ import main.Game;
 
 public class Potion extends GameObject {
 
-	private float hoverOffset;
-	private int maxHoverOffset, hoverDir = 1;
+    private float hoverOffset; // Offset for the hovering animation
+    private int maxHoverOffset; // Maximum offset for the hover animation
+    private int hoverDir = 1; // Direction of hover (1 for up, -1 for down)
 
-	public Potion(int x, int y, int objType) {
-		super(x, y, objType);
-		doAnimation = true;
+    // Constructor for Potion
+    public Potion(int x, int y, int objType) {
+        super(x, y, objType);
+        doAnimation = true; // Enable animation
 
-		initHitbox(7, 14);
+        initHitbox(7, 14); // Initialize hitbox
 
-		xDrawOffset = (int) (3 * Game.SCALE);
-		yDrawOffset = (int) (2 * Game.SCALE);
+        // Set draw offsets
+        xDrawOffset = (int) (3 * Game.SCALE);
+        yDrawOffset = (int) (2 * Game.SCALE);
 
-		maxHoverOffset = (int) (10 * Game.SCALE);
-	}
+        // Set maximum hover offset
+        maxHoverOffset = (int) (10 * Game.SCALE);
+    }
 
-	public void update() {
-		updateAnimationTick();
-		updateHover();
-	}
+    // Updates the potion, including animation and hover effect
+    public void update() {
+        updateAnimationTick(); // Update animation
+        updateHover(); // Update hover effect
+    }
 
-	private void updateHover() {
-		hoverOffset += (0.075f * Game.SCALE * hoverDir);
+    // Updates the hover effect for the potion
+    private void updateHover() {
+        // Update hover offset based on direction
+        hoverOffset += (0.075f * Game.SCALE * hoverDir);
 
-		if (hoverOffset >= maxHoverOffset)
-			hoverDir = -1;
-		else if (hoverOffset < 0)
-			hoverDir = 1;
+        // Reverse direction if at max offset or at starting position
+        if (hoverOffset >= maxHoverOffset)
+            hoverDir = -1;
+        else if (hoverOffset < 0)
+            hoverDir = 1;
 
-		hitbox.y = y + hoverOffset;
-	}
+        // Update hitbox position based on hover offset
+        hitbox.y = y + hoverOffset;
+    }
 }
