@@ -7,35 +7,37 @@ import gamestates.Gamestate;
 import main.GamePanel;
 
 public class KeyboardInputs implements KeyListener {
+    // Attribute to hold the game panel instance
+    private GamePanel gamePanel;
 
-	private GamePanel gamePanel;
+    // Constructor for KeyboardInputs
+    public KeyboardInputs(GamePanel gamePanel) {
+        this.gamePanel = gamePanel;
+    }
 
-	public KeyboardInputs(GamePanel gamePanel) {
-		this.gamePanel = gamePanel;
-	}
+    // Method to handle key release events
+    @SuppressWarnings("incomplete-switch")
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (Gamestate.state) {
+            case MENU -> gamePanel.getGame().getMenu().keyReleased(e); // Call keyReleased in Menu state
+            case PLAYING -> gamePanel.getGame().getPlaying().keyReleased(e); // Call keyReleased in Playing state
+        }
+    }
 
-	@SuppressWarnings("incomplete-switch")
-	@Override
-	public void keyReleased(KeyEvent e) {
-		switch (Gamestate.state) {
-		case MENU -> gamePanel.getGame().getMenu().keyReleased(e);
-		case PLAYING -> gamePanel.getGame().getPlaying().keyReleased(e);
-		// case CREDITS -> gamePanel.getGame().getCredits().keyReleased(e);
-		}
-	}
+    // Method to handle key press events
+    @SuppressWarnings("incomplete-switch")
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (Gamestate.state) {
+            case MENU -> gamePanel.getGame().getMenu().keyPressed(e); // Call keyPressed in Menu state
+            case PLAYING -> gamePanel.getGame().getPlaying().keyPressed(e); // Call keyPressed in Playing state
+        }
+    }
 
-	@SuppressWarnings("incomplete-switch")
-	@Override
-	public void keyPressed(KeyEvent e) {
-		switch (Gamestate.state) {
-		case MENU -> gamePanel.getGame().getMenu().keyPressed(e);
-		case PLAYING -> gamePanel.getGame().getPlaying().keyPressed(e);
-		// case OPTIONS -> gamePanel.getGame().getGameOptions().keyPressed(e);
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// Not In Use
-	}
+    // Method to handle key typed events (not in use)
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // Not In Use
+    }
 }
