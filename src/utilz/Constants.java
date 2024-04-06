@@ -190,7 +190,6 @@ public class Constants {
 			switch (enemy_type) {
 			case CRABBY:
 				return 50;
-			
 			default:
 				return 1;
 			}
@@ -200,7 +199,6 @@ public class Constants {
 			switch (enemy_type) {
 			case CRABBY:
 				return 15;
-			
 			default:
 				return 0;
 			}

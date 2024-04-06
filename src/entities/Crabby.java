@@ -43,7 +43,7 @@ public class Crabby extends Enemy {
 				move(lvlData);
 
 				if (inAir)
-					playing.addDialogue((int) hitbox.x, (int) hitbox.y, EXCLAMATION);
+					// playing.addDialogue((int) hitbox.x, (int) hitbox.y, EXCLAMATION);
 
 				break;
 			case ATTACK:

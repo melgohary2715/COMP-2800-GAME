@@ -19,7 +19,7 @@ import ui.GameOverOverlay;
 import ui.LevelCompletedOverlay;
 import ui.PauseOverlay;
 import utilz.LoadSave;
-import effects.DialogueEffect;
+// import effects.DialogueEffect;
 // import effects.Rain;
 
 import static utilz.Constants.Environment.*;
@@ -46,7 +46,7 @@ public class Playing extends State implements Statemethods {
 
 	private BufferedImage backgroundImg, bigCloud, smallCloud, shipImgs[];
 	private BufferedImage[] questionImgs, exclamationImgs;
-	private ArrayList<DialogueEffect> dialogEffects = new ArrayList<>();
+	// private ArrayList<DialogueEffect> dialogEffects = new ArrayList<>();
 
 	private int[] smallCloudsPos;
 	private Random rnd = new Random();
@@ -55,7 +55,7 @@ public class Playing extends State implements Statemethods {
 	private boolean lvlCompleted;
 	private boolean gameCompleted;
 	private boolean playerDying;
-	private boolean drawRain;
+	// private boolean drawRain;
 
 	// Ship will be decided to drawn here. It's just a cool addition to the game
 	// for the first level. Hinting on that the player arrived with the boat.
@@ -83,44 +83,44 @@ public class Playing extends State implements Statemethods {
 			smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
 
 		shipImgs = new BufferedImage[4];
-		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SHIP);
-		for (int i = 0; i < shipImgs.length; i++)
-			shipImgs[i] = temp.getSubimage(i * 78, 0, 78, 72);
+		// BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.SHIP);
+		// for (int i = 0; i < shipImgs.length; i++)
+		// 	shipImgs[i] = temp.getSubimage(i * 78, 0, 78, 72);
 
-		loadDialogue();
+		// loadDialogue();
 		calcLvlOffset();
 		loadStartLevel();
-		setDrawRainBoolean();
+		// setDrawRainBoolean();
 	}
 
-	private void loadDialogue() {
-		loadDialogueImgs();
+	// private void loadDialogue() {
+	// 	// loadDialogueImgs();
 
-		// Load dialogue array with premade objects, that gets activated when needed.
-		// This is a simple
-		// way of avoiding ConcurrentModificationException error. (Adding to a list that
-		// is being looped through.
+	// 	// Load dialogue array with premade objects, that gets activated when needed.
+	// 	// This is a simple
+	// 	// way of avoiding ConcurrentModificationException error. (Adding to a list that
+	// 	// is being looped through.
 
-		for (int i = 0; i < 10; i++)
-			dialogEffects.add(new DialogueEffect(0, 0, EXCLAMATION));
-		for (int i = 0; i < 10; i++)
-			dialogEffects.add(new DialogueEffect(0, 0, QUESTION));
+	// 	for (int i = 0; i < 10; i++)
+	// 		dialogEffects.add(new DialogueEffect(0, 0, EXCLAMATION));
+	// 	for (int i = 0; i < 10; i++)
+	// 		dialogEffects.add(new DialogueEffect(0, 0, QUESTION));
 
-		for (DialogueEffect de : dialogEffects)
-			de.deactive();
-	}
+	// 	for (DialogueEffect de : dialogEffects)
+	// 		de.deactive();
+	// }
 
-	private void loadDialogueImgs() {
-		BufferedImage qtemp = LoadSave.GetSpriteAtlas(LoadSave.QUESTION_ATLAS);
-		questionImgs = new BufferedImage[5];
-		for (int i = 0; i < questionImgs.length; i++)
-			questionImgs[i] = qtemp.getSubimage(i * 14, 0, 14, 12);
+	// private void loadDialogueImgs() {
+	// 	BufferedImage qtemp = LoadSave.GetSpriteAtlas(LoadSave.QUESTION_ATLAS);
+	// 	questionImgs = new BufferedImage[5];
+	// 	for (int i = 0; i < questionImgs.length; i++)
+	// 		questionImgs[i] = qtemp.getSubimage(i * 14, 0, 14, 12);
 
-		BufferedImage etemp = LoadSave.GetSpriteAtlas(LoadSave.EXCLAMATION_ATLAS);
-		exclamationImgs = new BufferedImage[5];
-		for (int i = 0; i < exclamationImgs.length; i++)
-			exclamationImgs[i] = etemp.getSubimage(i * 14, 0, 14, 12);
-	}
+	// 	BufferedImage etemp = LoadSave.GetSpriteAtlas(LoadSave.EXCLAMATION_ATLAS);
+	// 	exclamationImgs = new BufferedImage[5];
+	// 	for (int i = 0; i < exclamationImgs.length; i++)
+	// 		exclamationImgs[i] = etemp.getSubimage(i * 14, 0, 14, 12);
+	// }
 
 	public void loadNextLevel() {
 		levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
@@ -169,64 +169,64 @@ public class Playing extends State implements Statemethods {
 		else if (playerDying)
 			player.update();
 		else {
-			updateDialogue();
-			if (drawRain)
+			// updateDialogue();
+			// if (drawRain)
 				// rain.update(xLvlOffset);
 			levelManager.update();
 			objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			player.update();
 			enemyManager.update(levelManager.getCurrentLevel().getLevelData());
 			checkCloseToBorder();
-			if (drawShip)
-				updateShipAni();
+			// if (drawShip)
+			// 	updateShipAni();
 		}
 	}
 
-	private void updateShipAni() {
-		shipTick++;
-		if (shipTick >= 35) {
-			shipTick = 0;
-			shipAni++;
-			if (shipAni >= 4)
-				shipAni = 0;
-		}
+	// private void updateShipAni() {
+	// 	shipTick++;
+	// 	if (shipTick >= 35) {
+	// 		shipTick = 0;
+	// 		shipAni++;
+	// 		if (shipAni >= 4)
+	// 			shipAni = 0;
+	// 	}
 
-		shipHeightDelta += shipHeightChange * shipDir;
-		shipHeightDelta = Math.max(Math.min(10 * Game.SCALE, shipHeightDelta), 0);
+	// 	shipHeightDelta += shipHeightChange * shipDir;
+	// 	shipHeightDelta = Math.max(Math.min(10 * Game.SCALE, shipHeightDelta), 0);
 
-		if (shipHeightDelta == 0)
-			shipDir = 1;
-		else if (shipHeightDelta == 10 * Game.SCALE)
-			shipDir = -1;
+	// 	if (shipHeightDelta == 0)
+	// 		shipDir = 1;
+	// 	else if (shipHeightDelta == 10 * Game.SCALE)
+	// 		shipDir = -1;
 
-	}
+	// }
 
-	private void updateDialogue() {
-		for (DialogueEffect de : dialogEffects)
-			if (de.isActive())
-				de.update();
-	}
+	// private void updateDialogue() {
+	// 	for (DialogueEffect de : dialogEffects)
+	// 		if (de.isActive())
+	// 			de.update();
+	// }
 
-	private void drawDialogue(Graphics g, int xLvlOffset) {
-		for (DialogueEffect de : dialogEffects)
-			if (de.isActive()) {
-				if (de.getType() == QUESTION)
-					g.drawImage(questionImgs[de.getAniIndex()], de.getX() - xLvlOffset, de.getY(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT, null);
-				else
-					g.drawImage(exclamationImgs[de.getAniIndex()], de.getX() - xLvlOffset, de.getY(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT, null);
-			}
-	}
+	// private void drawDialogue(Graphics g, int xLvlOffset) {
+	// 	for (DialogueEffect de : dialogEffects)
+	// 		if (de.isActive()) {
+	// 			if (de.getType() == QUESTION)
+	// 				g.drawImage(questionImgs[de.getAniIndex()], de.getX() - xLvlOffset, de.getY(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT, null);
+	// 			else
+	// 				g.drawImage(exclamationImgs[de.getAniIndex()], de.getX() - xLvlOffset, de.getY(), DIALOGUE_WIDTH, DIALOGUE_HEIGHT, null);
+	// 		}
+	// }
 
-	public void addDialogue(int x, int y, int type) {
-		// Not adding a new one, we are recycling. #ThinkGreen lol
-		dialogEffects.add(new DialogueEffect(x, y - (int) (Game.SCALE * 15), type));
-		for (DialogueEffect de : dialogEffects)
-			if (!de.isActive())
-				if (de.getType() == type) {
-					de.reset(x, -(int) (Game.SCALE * 15));
-					return;
-				}
-	}
+	// public void addDialogue(int x, int y, int type) {
+	// 	// Not adding a new one, we are recycling. #ThinkGreen lol
+	// 	dialogEffects.add(new DialogueEffect(x, y - (int) (Game.SCALE * 15), type));
+	// 	for (DialogueEffect de : dialogEffects)
+	// 		if (!de.isActive())
+	// 			if (de.getType() == type) {
+	// 				de.reset(x, -(int) (Game.SCALE * 15));
+	// 				return;
+	// 			}
+	// }
 
 	private void checkCloseToBorder() {
 		int playerX = (int) player.getHitbox().x;
@@ -245,18 +245,18 @@ public class Playing extends State implements Statemethods {
 		g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 
 		drawClouds(g);
-		if (drawRain)
+		// if (drawRain)
 			// rain.draw(g, xLvlOffset);
 
-		if (drawShip)
-			g.drawImage(shipImgs[shipAni], (int) (100 * Game.SCALE) - xLvlOffset, (int) ((288 * Game.SCALE) + shipHeightDelta), (int) (78 * Game.SCALE), (int) (72 * Game.SCALE), null);
+		// if (drawShip)
+		// 	g.drawImage(shipImgs[shipAni], (int) (100 * Game.SCALE) - xLvlOffset, (int) ((288 * Game.SCALE) + shipHeightDelta), (int) (78 * Game.SCALE), (int) (72 * Game.SCALE), null);
 
 		levelManager.draw(g, xLvlOffset);
 		objectManager.draw(g, xLvlOffset);
 		enemyManager.draw(g, xLvlOffset);
 		player.render(g, xLvlOffset);
 		// objectManager.drawBackgroundTrees(g, xLvlOffset);
-		drawDialogue(g, xLvlOffset);
+		// drawDialogue(g, xLvlOffset);
 
 		if (paused) {
 			g.setColor(new Color(0, 0, 0, 150));
@@ -292,21 +292,21 @@ public class Playing extends State implements Statemethods {
 		paused = false;
 		lvlCompleted = false;
 		playerDying = false;
-		drawRain = false;
+		// drawRain = false;
 
-		setDrawRainBoolean();
+		// setDrawRainBoolean();
 
 		player.resetAll();
 		enemyManager.resetAllEnemies();
 		objectManager.resetAllObjects();
-		dialogEffects.clear();
+		// dialogEffects.clear();
 	}
 
-	private void setDrawRainBoolean() {
-		// This method makes it rain 20% of the time you load a level.
-		if (rnd.nextFloat() >= 0.8f)
-			drawRain = true;
-	}
+	// private void setDrawRainBoolean() {
+	// 	// This method makes it rain 20% of the time you load a level.
+	// 	if (rnd.nextFloat() >= 0.8f)
+	// 		drawRain = true;
+	// }
 
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
