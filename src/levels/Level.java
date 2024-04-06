@@ -6,10 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import entities.Crabby;
-// import entities.Pinkstar;
-// import entities.Shark;
 import main.Game;
-// import objects.BackgroundTree;
 import objects.GameContainer;
 import objects.Potion;
 import objects.Spike;
@@ -18,126 +15,114 @@ import static utilz.Constants.EnemyConstants.*;
 import static utilz.Constants.ObjectConstants.*;
 
 public class Level {
+    // Attributes for the level
+    private BufferedImage img; // Level image
+    private int[][] lvlData; // Level data
 
-	private BufferedImage img;
-	private int[][] lvlData;
+    // Lists to hold different objects and entities
+    private ArrayList<Crabby> crabs = new ArrayList<>();
+    private ArrayList<Potion> potions = new ArrayList<>();
+    private ArrayList<Spike> spikes = new ArrayList<>();
+    private ArrayList<GameContainer> containers = new ArrayList<>();
 
-	private ArrayList<Crabby> crabs = new ArrayList<>();
-	// private ArrayList<Pinkstar> pinkstars = new ArrayList<>();
-	// private ArrayList<Shark> sharks = new ArrayList<>();
-	private ArrayList<Potion> potions = new ArrayList<>();
-	private ArrayList<Spike> spikes = new ArrayList<>();
-	private ArrayList<GameContainer> containers = new ArrayList<>();
+    // Attributes for level offsets
+    private int lvlTilesWide;
+    private int maxTilesOffset;
+    private int maxLvlOffsetX;
+    private Point playerSpawn; // Player spawn point
 
-	private int lvlTilesWide;
-	private int maxTilesOffset;
-	private int maxLvlOffsetX;
-	private Point playerSpawn;
+    // Constructor for Level
+    public Level(BufferedImage img) {
+        this.img = img;
+        lvlData = new int[img.getHeight()][img.getWidth()];
+        loadLevel(); // Load level from the image
+        calcLvlOffsets(); // Calculate level offsets
+    }
 
-	public Level(BufferedImage img) {
-		this.img = img;
-		lvlData = new int[img.getHeight()][img.getWidth()];
-		loadLevel();
-		calcLvlOffsets();
-	}
+    // Loads the level from the image
+    private void loadLevel() {
+        for (int y = 0; y < img.getHeight(); y++)
+            for (int x = 0; x < img.getWidth(); x++) {
+                Color c = new Color(img.getRGB(x, y));
+                int red = c.getRed();
+                int green = c.getGreen();
+                int blue = c.getBlue();
 
-	private void loadLevel() {
+                loadLevelData(red, x, y);
+                loadEntities(green, x, y);
+                loadObjects(blue, x, y);
+            }
+    }
 
-		// Looping through the image colors just once. Instead of one per
-		// object/enemy/etc..
-		// Removed many methods in HelpMethods class.
+    // Loads level data based on the red value of the image pixel
+    private void loadLevelData(int redValue, int x, int y) {
+        if (redValue >= 50)
+            lvlData[y][x] = 0;
+        else
+            lvlData[y][x] = redValue;
+    }
 
-		for (int y = 0; y < img.getHeight(); y++)
-			for (int x = 0; x < img.getWidth(); x++) {
-				Color c = new Color(img.getRGB(x, y));
-				int red = c.getRed();
-				int green = c.getGreen();
-				int blue = c.getBlue();
+    // Loads entities based on the green value of the image pixel
+    private void loadEntities(int greenValue, int x, int y) {
+        switch (greenValue) {
+            case CRABBY -> crabs.add(new Crabby(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
+            case 100 -> playerSpawn = new Point(x * Game.TILES_SIZE, y * Game.TILES_SIZE);
+        }
+    }
 
-				loadLevelData(red, x, y);
-				loadEntities(green, x, y);
-				loadObjects(blue, x, y);
-			}
-	}
+    // Loads objects based on the blue value of the image pixel
+    private void loadObjects(int blueValue, int x, int y) {
+        switch (blueValue) {
+            case RED_POTION -> potions.add(new Potion(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
+            case BOX -> containers.add(new GameContainer(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
+            case SPIKE -> spikes.add(new Spike(x * Game.TILES_SIZE, y * Game.TILES_SIZE, SPIKE));
+        }
+    }
 
-	private void loadLevelData(int redValue, int x, int y) {
-		if (redValue >= 50)
-			lvlData[y][x] = 0;
-		else
-			lvlData[y][x] = redValue;
-		
-	}
+    // Calculates level offsets
+    private void calcLvlOffsets() {
+        lvlTilesWide = img.getWidth();
+        maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
+        maxLvlOffsetX = Game.TILES_SIZE * maxTilesOffset;
+    }
 
+    // Getter for sprite index
+    public int getSpriteIndex(int x, int y) {
+        return lvlData[y][x];
+    }
 
+    // Getter for level data
+    public int[][] getLevelData() {
+        return lvlData;
+    }
 
-	private void loadEntities(int greenValue, int x, int y) {
-		switch (greenValue) {
-		case CRABBY -> crabs.add(new Crabby(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
-		// case PINKSTAR -> pinkstars.add(new Pinkstar(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
-		// case SHARK -> sharks.add(new Shark(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
-		case 100 -> playerSpawn = new Point(x * Game.TILES_SIZE, y * Game.TILES_SIZE);
-		}
-	}
+    // Getter for level offset
+    public int getLvlOffset() {
+        return maxLvlOffsetX;
+    }
 
-	private void loadObjects(int blueValue, int x, int y) {
-		switch (blueValue) {
-		case RED_POTION -> potions.add(new Potion(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
-		case BOX -> containers.add(new GameContainer(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
-		case SPIKE -> spikes.add(new Spike(x * Game.TILES_SIZE, y * Game.TILES_SIZE, SPIKE));
-		// case TREE_ONE, TREE_TWO, TREE_THREE -> trees.add(new BackgroundTree(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
-		}
-	}
+    // Getter for player spawn point
+    public Point getPlayerSpawn() {
+        return playerSpawn;
+    }
 
-	private void calcLvlOffsets() {
-		lvlTilesWide = img.getWidth();
-		maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
-		maxLvlOffsetX = Game.TILES_SIZE * maxTilesOffset;
-	}
+    // Getter for crabs list
+    public ArrayList<Crabby> getCrabs() {
+        return crabs;
+    }
 
-	public int getSpriteIndex(int x, int y) {
-		return lvlData[y][x];
-	}
+    // Getter for potions list
+    public ArrayList<Potion> getPotions() {
+        return potions;
+    }
 
-	public int[][] getLevelData() {
-		return lvlData;
-	}
+    // Getter for containers list
+    public ArrayList<GameContainer> getContainers() {
+        return containers;
+    }
 
-	public int getLvlOffset() {
-		return maxLvlOffsetX;
-	}
-
-	public Point getPlayerSpawn() {
-		return playerSpawn;
-	}
-
-	public ArrayList<Crabby> getCrabs() {
-		return crabs;
-	}
-
-	// public ArrayList<Shark> getSharks() {
-	// 	return sharks;
-	// }
-
-	public ArrayList<Potion> getPotions() {
-		return potions;
-	}
-
-	public ArrayList<GameContainer> getContainers() {
-		return containers;
-	}
-
-	public ArrayList<Spike> getSpikes() {
-		return spikes;
-	}
-
-	
-
-	// public ArrayList<Pinkstar> getPinkstars() {
-	// 	return pinkstars;
-	// }
-
-	
-
-	
-
+    // Getter for spikes list
+    public ArrayList<Spike> getSpikes() {
+        return spikes;
+    }
 }
