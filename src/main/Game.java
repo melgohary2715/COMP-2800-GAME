@@ -1,6 +1,8 @@
 package main;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 
 import audio.AudioPlayer;
 import gamestates.Gamestate;
@@ -19,17 +21,29 @@ public class Game implements Runnable {
     private AudioPlayer audioPlayer;
 
     public final static int TILES_DEFAULT_SIZE = 32;
-    public final static float SCALE = 2f;
+    public static float SCALE = 2f;
     public final static int TILES_IN_WIDTH = 26;
     public final static int TILES_IN_HEIGHT = 14;
-    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
-    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+    public static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+    public static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+    public static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
     private final boolean SHOW_FPS_UPS = true;
 
     // Constructor for Game
     public Game() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+
+        // Adjust the scale factor based on screen size
+        SCALE = (float) Math.min(width / (TILES_DEFAULT_SIZE * TILES_IN_WIDTH), height / (TILES_DEFAULT_SIZE * TILES_IN_HEIGHT));
+
+        // Recalculate tile size and game dimensions based on the new scale
+        TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+        GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+        GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
+
         initClasses();
         gamePanel = new GamePanel(this);
         new GameWindow(gamePanel);
