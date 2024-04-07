@@ -16,6 +16,7 @@ public class PauseOverlay {
     private BufferedImage backgroundImg;
     private int bgX, bgY, bgW, bgH;
     private UrmButton menuB, replayB, unpauseB;
+    private float scale; // Added scale variable
 
     // Constructor for PauseOverlay class
     public PauseOverlay(Playing playing) {
@@ -26,26 +27,41 @@ public class PauseOverlay {
 
     // Create the buttons for the pause overlay
     private void createUrmButtons() {
-        int menuX = (int) (313 * Game.SCALE);
-        int replayX = (int) (387 * Game.SCALE);
-        int unpauseX = (int) (462 * Game.SCALE);
-        int bY = (int) (325 * Game.SCALE);
+        // Calculate the center of the background
+        int centerX = bgX + bgW / 2;
+
+        // Calculate button positions based on the center of the background
+        int buttonSize = (int) (URM_SIZE * scale); // Adjust button size based on scale
+        int buttonSpacing = (int) (74 * scale); // Adjust button spacing based on scale
+        int totalButtonsWidth = 3 * buttonSize + 2 * buttonSpacing; // Total width of all buttons and spacing
+        int firstButtonX = centerX - totalButtonsWidth / 2;
+
+        int bY = bgY + (int) (325 * scale); // Adjust Y position based on scale
 
         // Create the menu button
-        menuB = new UrmButton(menuX, bY, URM_SIZE, URM_SIZE, 2);
+        menuB = new UrmButton(firstButtonX, bY, buttonSize, buttonSize, 2);
         // Create the replay button
-        replayB = new UrmButton(replayX, bY, URM_SIZE, URM_SIZE, 1);
+        replayB = new UrmButton(firstButtonX + buttonSize + buttonSpacing, bY, buttonSize, buttonSize, 1);
         // Create the unpause button
-        unpauseB = new UrmButton(unpauseX, bY, URM_SIZE, URM_SIZE, 0);
+        unpauseB = new UrmButton(firstButtonX + 2 * (buttonSize + buttonSpacing), bY, buttonSize, buttonSize, 0);
     }
 
     // Load the background image for the pause overlay
     private void loadBackground() {
         backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_BACKGROUND);
-        bgW = (int) (backgroundImg.getWidth() );
-        bgH = (int) (backgroundImg.getHeight() );
+
+        // Set the scale factor based on the smaller dimension of the screen
+        float scaleWidth = Game.GAME_WIDTH / (float) backgroundImg.getWidth();
+        float scaleHeight = Game.GAME_HEIGHT / (float) backgroundImg.getHeight();
+        scale = Math.min(scaleWidth, scaleHeight);
+
+        // Set the background width and height based on the scale factor
+        bgW = (int) (backgroundImg.getWidth() * scale);
+        bgH = (int) (backgroundImg.getHeight() * scale);
+
+        // Center the background image in the game window
         bgX = Game.GAME_WIDTH / 2 - bgW / 2;
-        bgY = (int) (-80 * Game.SCALE);
+        bgY = Game.GAME_HEIGHT / 2 - bgH / 2;
     }
 
     // Update method for the pause overlay
@@ -116,7 +132,7 @@ public class PauseOverlay {
     }
 
     // Check if the mouse event is inside a button's bounds
-    private boolean isIn(MouseEvent e, PauseButton b) {
+    private boolean isIn(MouseEvent e, UrmButton b) {
         return b.getBounds().contains(e.getX(), e.getY());
     }
 }
