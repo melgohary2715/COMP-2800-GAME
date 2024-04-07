@@ -17,7 +17,7 @@ public class GameOverOverlay {
     private Playing playing;
     private BufferedImage img;
     private int imgX, imgY, imgW, imgH;
-    private UrmButton menu, play;
+    private UrmButton replay, play;
 
     // Constructor for GameOverOverlay
     public GameOverOverlay(Playing playing) {
@@ -28,11 +28,11 @@ public class GameOverOverlay {
 
     // Creates the buttons for the overlay
     private void createButtons() {
-        int menuX = (int) (335 * Game.SCALE);
+        int replayX = (int) (335 * Game.SCALE);
         int playX = (int) (440 * Game.SCALE);
         int y = (int) (220 * Game.SCALE);
         play = new UrmButton(playX, y, URM_SIZE, URM_SIZE, 0); // Play button
-        menu = new UrmButton(menuX, y, URM_SIZE, URM_SIZE, 2); // Menu button
+        replay = new UrmButton(replayX, y, URM_SIZE, URM_SIZE, 1); // replay button
     }
 
     // Creates the overlay image
@@ -51,13 +51,13 @@ public class GameOverOverlay {
 
         g.drawImage(img, imgX, imgY, imgW, imgH, null); // Draw the overlay image
 
-        menu.draw(g); // Draw the menu button
+        replay.draw(g); // Draw the replay button
         play.draw(g); // Draw the play button
     }
 
     // Updates the overlay
     public void update() {
-        menu.update(); // Update the menu button
+        replay.update(); // Update the replay button
         play.update(); // Update the play button
     }
 
@@ -69,20 +69,20 @@ public class GameOverOverlay {
     // Handles mouse movement events
     public void mouseMoved(MouseEvent e) {
         play.setMouseOver(false); // Reset mouse over state for play button
-        menu.setMouseOver(false); // Reset mouse over state for menu button
+        replay.setMouseOver(false); // Reset mouse over state for replay button
 
-        if (isIn(menu, e))
-            menu.setMouseOver(true); // Set mouse over state for menu button
+        if (isIn(replay, e))
+            replay.setMouseOver(true); // Set mouse over state for replay button
         else if (isIn(play, e))
             play.setMouseOver(true); // Set mouse over state for play button
     }
 
     // Handles mouse release events
     public void mouseReleased(MouseEvent e) {
-        if (isIn(menu, e)) {
-            if (menu.isMousePressed()) {
-                playing.resetAll(); // Reset the playing state
-                playing.setGamestate(Gamestate.MENU); // Go back to the menu
+        if (isIn(replay, e)) {
+            if (replay.isMousePressed()) {
+                playing.resetAll(); //Reset playing state
+                playing.unpauseGame(); //Unpause Game
             }
         } else if (isIn(play, e))
             if (play.isMousePressed()) {
@@ -90,14 +90,14 @@ public class GameOverOverlay {
                 playing.getGame().getAudioPlayer().setLevelSong(playing.getLevelManager().getLevelIndex()); // Set the level song
             }
 
-        menu.resetBools(); // Reset the button states for menu button
+        replay.resetBools(); // Reset the button states for replay button
         play.resetBools(); // Reset the button states for play button
     }
 
     // Handles mouse press events
     public void mousePressed(MouseEvent e) {
-        if (isIn(menu, e))
-            menu.setMousePressed(true); // Set the menu button as pressed
+        if (isIn(replay, e))
+            replay.setMousePressed(true); // Set the replay button as pressed
         else if (isIn(play, e))
             play.setMousePressed(true); // Set the play button as pressed
     }
